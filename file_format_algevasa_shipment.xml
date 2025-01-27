@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record id="file_format_algevasa_shipment" model="file.format">
+            <field name="model" search="[('model', '=', 'stock.shipment.out')]"/>
+            <field name="name">Algevasa Shipment</field>
+            <field name="storage_type">memory</field>
+            <field name="file_type">xml</field>
+            <field name="state">disabled</field>
+            <field name="engine">jinja2</field>
+            <field name="xml_format">&lt;BODY&gt;
+    &lt;OPERACION&gt;PEDIDOSALIDA&lt;/OPERACION&gt;
+    &lt;PROPIETARIO&gt;{{ record.algevasa_owner or '' }}&lt;/PROPIETARIO&gt;
+    &lt;CLAVE&gt;{{ record.algevasa_key or '' }}&lt;/CLAVE&gt;
+    &lt;IDPED&gt;&lt;/IDPED&gt;
+    &lt;TIPDOC&gt;2000&lt;/TIPDOC&gt;
+    &lt;NUMDOC&gt;{{ record.number }}&lt;/NUMDOC&gt;
+    &lt;FECDOC&gt;{{ record.sale_date }}&lt;/FECDOC&gt;
+    &lt;FECENT&gt;{{ record.shipping_date }}&lt;/FECENT&gt;
+    &lt;PEDORI&gt;{{ record.reference or '' }}&lt;/PEDORI&gt;
+    &lt;TRANDEF&gt;&lt;/TRANDEF&gt;
+    &lt;POLSER&gt;0&lt;/POLSER&gt;
+    &lt;PRIORI&gt;0&lt;/PRIORI&gt;
+    &lt;PORTES&gt;P&lt;/PORTES&gt;
+    &lt;CONTACTO&gt;{{ record.contact.name if record.contact else '' }}&lt;/CONTACTO&gt;
+    &lt;NOMBRE&gt;{{ record.customer.name }}&lt;/NOMBRE&gt;
+    &lt;ADRESS&gt;{{ record.delivery_address.street_single_line }}&lt;/ADRESS&gt;
+    &lt;ADRESS1&gt;&lt;/ADRESS1&gt;
+    &lt;ADRESS2&gt;&lt;/ADRESS2&gt;
+    &lt;NIFCLI&gt;{{ record.customer.tax_identifier }}&lt;/NIFCLI&gt;
+    &lt;POBLA&gt;{{ record.delivery_address.city }}&lt;/POBLA&gt;
+    &lt;CODPOS&gt;{{ record.delivery_address.postal_code }}&lt;/CODPOS&gt;
+    &lt;PAIS&gt;{{ record.delivery_address.country.code }}&lt;/PAIS&gt;
+    &lt;MAYORISTA&gt;&lt;/MAYORISTA&gt;
+    &lt;TEXTOBS&gt;{{ record.comment }}&lt;/TEXTOBS&gt;
+    {% if record.contact and record.contact.type in ('phone', 'mobile') %}
+    &lt;NUMTEL&gt;{{ record.contact.value }}&lt;/NUMTEL&gt;
+    {% else %}
+    &lt;NUMTEL&gt;{{ record.customer.phone or record.customer.mobile or '' }}&lt;/NUMTEL&gt;
+    {% endif %}
+    {% if record.contact and record.contact.type == 'email' %}
+    &lt;CORREO&gt;{{ record.contact.value }}&lt;/CORREO&gt;
+    {% else %}
+    &lt;CORREO&gt;{{ record.customer.email }}&lt;/CORREO&gt;
+    {% endif %}
+    &lt;ITEMS&gt;
+        {% for line in record.outgoing_moves %}
+        &lt;ITEM&gt;
+            &lt;LINORI&gt;&lt;/LINORI&gt;
+            &lt;LINDOC&gt;{{ line.id }}&lt;/LINDOC&gt;
+            &lt;CODART&gt;{{ line.product.code }}&lt;/CODART&gt;
+            &lt;NUMLOT&gt;{{ line.lot.name if line.lot else '' }}&lt;/NUMLOT&gt;
+            &lt;CADUCIDAD&gt;{{ line.lot.expiry_date if line.lot and line.lot.expiry_date else '' }}&lt;/CADUCIDAD&gt;
+            &lt;CANTIDAD&gt;{{ line.quantity }}&lt;/CANTIDAD&gt;
+            &lt;SITSTK&gt;&lt;/SITSTK&gt;
+            &lt;PREUNI&gt;{{ line.unit_price }}&lt;/PREUNI&gt;
+            &lt;DESCUENTO&gt;&lt;/DESCUENTO&gt;
+            &lt;IVA&gt;&lt;/IVA&gt;
+            &lt;RECARGO&gt;&lt;/RECARGO&gt;
+            &lt;PVP&gt;{{ line.amount }}&lt;/PVP&gt;
+            &lt;TEXTOBS&gt;{{ line.description }}&lt;/TEXTOBS&gt;
+        &lt;/ITEM&gt;
+        {% endfor %}
+    &lt;/ITEMS&gt;
+&lt;/BODY&gt;</field>
+        </record>
+    </data>
+</tryton>

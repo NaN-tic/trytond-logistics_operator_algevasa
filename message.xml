@@ -1,0 +1,7 @@
+<tryton>
+    <data grouped="1">
+        <record model="ir.message" id="msg_product_without_algevasa">
+            <field name="text">The product "%(product)s" is not synched with Algevasa and the shipment (%(shipment)s) is checked for synch with them.</field>
+        </record>
+    </data>
+</tryton>

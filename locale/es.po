@@ -1,0 +1,87 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:product.product,algevasa:"
+msgid "Algevasa"
+msgstr "Algevasa"
+
+msgctxt "field:product.product,algevasa_synch_message:"
+msgid "Algevasa Synch Message"
+msgstr "Algevasa Mensaje de sincronización"
+
+msgctxt "field:product.product,algevasa_synched:"
+msgid "Algevasa Synched"
+msgstr "Algevasa sincronizada"
+
+msgctxt "field:stock.location,algevasa:"
+msgid "Algevasa"
+msgstr "Algevasa"
+
+msgctxt "field:stock.location,algevasa_product_format:"
+msgid "Algevasa Product File Format"
+msgstr "Formato de archivo de producto de Algevasa"
+
+msgctxt "field:stock.location,algevasa_shipment_format:"
+msgid "Algevasa Shipment File Format"
+msgstr "Formato de archivo de albarán de Algevasa"
+
+msgctxt "field:stock.shipment.out,algevasa_status:"
+msgid "Algevasa Status"
+msgstr "Algevasa Status"
+
+msgctxt "field:stock.shipment.out,algevasa_synch_message:"
+msgid "Algevasa Synch Message"
+msgstr "Algevasa Mensaje de sincronización"
+
+msgctxt "field:stock.shipment.out,algevasa_synched:"
+msgid "Algevasa Synched"
+msgstr "Algevasa sincronizada"
+
+msgctxt "field:stock.shipment.out,algevasa_warehouse:"
+msgid "Algevasa Warehouse"
+msgstr "Almacén de Algevasa"
+
+msgctxt "help:product.product,algevasa:"
+msgid "Work with Algevasa, a Logitiscs Operator"
+msgstr "Trabaja con Algevasa, Operador Logístico"
+
+msgctxt "help:stock.location,algevasa:"
+msgid "Work with Algevasa, a Logitiscs Operator"
+msgstr "Trabaja con Algevasa, Operador Logístico"
+
+msgctxt "model:ir.message,text:msg_product_without_algevasa"
+msgid ""
+"The product \"%(product)s\" is not synched with Algevasa and the shipment "
+"(%(shipment)s) is checked for synch with them."
+msgstr ""
+"El producto \"%(product)s\" no está sincronizado con Algevasa i el alabarán "
+"(%(shipment)s) está marcado para sincronizarse."
+
+msgctxt "model:ir.model.button,string:product_sync_with_algevasa_button"
+msgid "Sync With Algevasa"
+msgstr "Sincronizar con Algevasa"
+
+msgctxt "model:ir.model.button,string:shipment_out_sync_with_algevasa_button"
+msgid "Sync With Algevasa"
+msgstr "Sincronizar con Algevasa"
+
+msgctxt "view:product.product:"
+msgid "Logistics Operator"
+msgstr "Operador logístico"
+
+msgctxt "view:product.product:"
+msgid "Synchro Message"
+msgstr "Mensaje de sincronización"
+
+msgctxt "view:stock.shipment.out:"
+msgid "Logistics Operator"
+msgstr "Operador logístico"
+
+msgctxt "view:stock.shipment.out:"
+msgid "Status Message"
+msgstr "Mensaje de estado"
+
+msgctxt "view:stock.shipment.out:"
+msgid "Synchro Message"
+msgstr "Mensaje de sincronización"

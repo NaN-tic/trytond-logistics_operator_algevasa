@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<data>
+    <xpath expr="/form/notebook" position="inside">
+        <page string="Logistics Operator" id="logistics_operator" col="5">
+            <label name="algevasa"/>
+            <field name="algevasa"/>
+            <label name="algevasa_synched"/>
+            <field name="algevasa_synched"/>
+            <button name="sync_with_algevasa"/>
+            <separator string="Synchro Message" id="algevasa_synch_message_string" colspan="5"/>
+            <field name="algevasa_synch_message" colspan="5"/>
+        </page>
+    </xpath>
+</data>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<data>
+    <xpath expr="/form/field[@name='childs']" position="after">
+          <group col="4" colspan="4" id="logistics_operator">
+              <label name="algevasa"/>
+              <field name="algevasa"/>
+              <newline/>
+              <label name="algevasa_product_format"/>
+              <field name="algevasa_product_format"/>
+              <label name="algevasa_shipment_format"/>
+              <field name="algevasa_shipment_format"/>
+          </group>
+    </xpath>
+</data>

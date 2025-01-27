@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- The COPYRIGHT file at the top level of this repository contains the full
+     copyright notices and license terms. -->
+<tryton>
+    <data>
+        <record id="file_format_algevasa_product" model="file.format">
+            <field name="model" search="[('model', '=', 'product.product')]"/>
+            <field name="name">Algevasa Product</field>
+            <field name="storage_type">memory</field>
+            <field name="file_type">xml</field>
+            <field name="state">disabled</field>
+            <field name="engine">jinja2</field>
+            <field name="xml_format">&lt;BODY&gt;
+    &lt;OPERACION&gt;MAESTROITEM&lt;/OPERACION&gt;
+    &lt;PROPIETARIO&gt;{{ record.algevasa_owner or '' }}&lt;/PROPIETARIO&gt;
+    &lt;CLAVE&gt;{{ record.algevasa_key or '' }}&lt;/CLAVE&gt;
+    &lt;ITEMS&gt;
+        &lt;ITEM&gt;
+            &lt;CODART&gt;{{ record.code or '' }}&lt;/CODART&gt;
+            &lt;DESCRI&gt;{{ record.name or '' }}&lt;/DESCRI&gt;
+            &lt;CODEAN&gt;{{ record.identifier_get('ean') or '' }}&lt;/CODEAN&gt;
+            &lt;PESUNI&gt;{{ record.weight or '' }}&lt;/PESUNI&gt;
+            &lt;VOLUNI&gt;{{ record.volumn or '' }}&lt;/VOLUNI&gt;
+            &lt;UNIPAC&gt;1&lt;/UNIPAC&gt;
+            &lt;PACCAJ&gt;&lt;/PACCAJ&gt;
+            &lt;CAJPAL&gt;&lt;/CAJPAL&gt;
+            &lt;CTRCAL&gt;N&lt;/CTRCAL&gt;
+            &lt;SEGURO&gt;1&lt;/SEGURO&gt;
+            &lt;DESAMP&gt;&lt;/DESAMP&gt;
+            &lt;BLOQUEADO&gt;&lt;/BLOQUEADO&gt;
+            &lt;CTRCAD&gt;&lt;/CTRCAD&gt;
+            &lt;CTRLOT&gt;&lt;/CTRLOT&gt;
+            &lt;MARCA&gt;&lt;/MARCA&gt;
+            &lt;ACTIVO&gt;&lt;/ACTIVO&gt;
+        &lt;/ITEM&gt;
+    &lt;/ITEMS&gt;
+&lt;/BODY&gt;</field>
+        </record>
+    </data>
+</tryton>
