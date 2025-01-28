@@ -22,14 +22,14 @@
             &lt;PESUNI&gt;{{ record.weight or '' }}&lt;/PESUNI&gt;
             &lt;VOLUNI&gt;{{ record.volumn or '' }}&lt;/VOLUNI&gt;
             &lt;UNIPAC&gt;1&lt;/UNIPAC&gt;
-            &lt;PACCAJ&gt;&lt;/PACCAJ&gt;
-            &lt;CAJPAL&gt;&lt;/CAJPAL&gt;
+            &lt;PACCAJ&gt;1&lt;/PACCAJ&gt;
+            &lt;CAJPAL&gt;1&lt;/CAJPAL&gt;
             &lt;CTRCAL&gt;N&lt;/CTRCAL&gt;
             &lt;SEGURO&gt;1&lt;/SEGURO&gt;
             &lt;DESAMP&gt;&lt;/DESAMP&gt;
             &lt;BLOQUEADO&gt;&lt;/BLOQUEADO&gt;
-            &lt;CTRCAD&gt;&lt;/CTRCAD&gt;
-            &lt;CTRLOT&gt;&lt;/CTRLOT&gt;
+            &lt;CTRCAD&gt;N&lt;/CTRCAD&gt;
+            &lt;CTRLOT&gt;N&lt;/CTRLOT&gt;
             &lt;MARCA&gt;&lt;/MARCA&gt;
             &lt;ACTIVO&gt;&lt;/ACTIVO&gt;
         &lt;/ITEM&gt;
