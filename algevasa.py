@@ -40,9 +40,6 @@ def _requests(type_, data=None, headers=None, verify=True):
         "Content-Type": "application/soap+xml; charset=utf-8",
         }
 
-    print("==================================")
-    print(data)
-    print("==================================")
     encoded_data = urllib.parse.quote(data)
     soap_body = f"""<?xml version="1.0" encoding="utf-8"?>
     <soap12:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope">

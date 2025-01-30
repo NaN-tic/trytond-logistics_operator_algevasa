@@ -3,6 +3,8 @@
 from trytond.pool import Pool, PoolMeta
 from trytond.model import ModelView, fields
 from trytond.pyson import Eval
+from trytond.tools import grouped_slice
+from trytond.transaction import Transaction
 from trytond.config import config
 from .algevasa import _requests
 
@@ -76,5 +78,10 @@ class Product(metaclass=PoolMeta):
     @classmethod
     @ModelView.button
     def sync_with_algevasa(cls, products):
-        cls.update_algevasa_product(products)
+        for sub_ids in grouped_slice(products):
+            sub_products = cls.search([
+                    ('id', 'in', list(sub_ids))
+                    ])
+            cls.update_algevasa_product(sub_products)
+            Transaction().commit()
 
