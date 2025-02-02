@@ -5,31 +5,56 @@
 import requests
 import urllib.parse
 from lxml import etree
+import html
 
 from trytond.config import config
 
 URL = config.get('algevasa', 'url')
 
+def xml_to_dict(element):
+    """Convert an XML element to dictionary without namespaces."""
+    result = {}
 
-def _process_response(response):
-    root = etree.fromstring(response.content)
+    for child in element:
+        # Delete namespace from tag
+        tag = etree.QName(child).localname
+        child_dict = (xml_to_dict(child)
+            if len(child) > 0 else (child.text or ""))
+
+        # If key exist convert to a list
+        if tag in result:
+            if isinstance(result[tag], list):
+                result[tag].append(child_dict)
+            else:
+                result[tag] = [result[tag], child_dict]
+        else:
+            result[tag] = child_dict
+
+    return result
+
+
+def parse_xml(xml_data):
+    """From an XML, detect if a SOAP and convert to dict."""
+    # If necessary convert from string to bytes
+    if isinstance(xml_data, str):
+        xml_data = xml_data.encode("utf-8")
+
+    root = etree.fromstring(xml_data)
+
+    # Define the possible namespaces obtained in the response from SOAP.
     namespaces = {
-        "soap": "http://www.w3.org/2003/05/soap-envelope",
-        "ws": "http://webservice.algevasa.com/",
+        'soap': "http://www.w3.org/2003/05/soap-envelope",
+        'ns': "http://webservice.algevasa.com/"
     }
 
-    wsagv_result = root.xpath("//ws:WSAGVResult", namespaces=namespaces)[0].text
-    wsagv_root = etree.fromstring(wsagv_result)
-    inner_ns = {"env": "http://schemas.xmlsoap.org/soap/envelope/"}
+    # If is a SOAP message, get the WSAGVResult
+    wsagv_result = root.find('.//ns:WSAGVResult', namespaces)
+    if wsagv_result is not None:
+        # As the WSAGVResult value is an HTML escape, need to unscape.
+        extracted_xml = html.unescape(wsagv_result.text)
+        root = etree.fromstring(extracted_xml)
 
-    answer = wsagv_root.xpath("//env:respuesta", namespaces=inner_ns)[0].text
-    message = wsagv_root.xpath("//env:Mensaje", namespaces=inner_ns)[0].text
-
-    return {
-        'answer': answer,
-        'message': message,
-        'text': response.text,
-        }
+    return xml_to_dict(root)
 
 
 def _requests(type_, data=None, headers=None, verify=True):
@@ -61,8 +86,12 @@ def _requests(type_, data=None, headers=None, verify=True):
             'code': 400,
             }
 
+    res = parse_xml(response.content)
     result = {
         'code': response.status_code,
+        'text': response.text,
+        'answer': res.get('Body', {}).get(
+            'respuesta', 'FALSE'),
+        'message': res.get('Body', {}).get('Mensaje', ''),
     }
-    result.update(_process_response(response))
     return result

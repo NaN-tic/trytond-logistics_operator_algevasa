@@ -3,25 +3,73 @@ import json
 import base64
 
 URL = 'http://localhost:8507/'
-DBNAME = 'openetics_241016'
-USERNAME = 'algevasa'
-PASSWORD = 'Mastercow00'
-CREDENTIALS = (USERNAME, PASSWORD)
+DBNAME = '<DB_NAME>'
+USERNAME = '<USER>'
+PASSWORD = '<PASSWORD>'
+COMPANY_ID = 3
+
+def login(data):
+    headers = {'Content-type': 'application/json'}
+    return requests.post('%s%s/' % (URL, DBNAME), data=json.dumps(data), headers=headers)
 
 def call(data):
     headers = {
         'Content-type': 'application/json',
         'Authorization': 'Basic ' + base64.b64encode(f"{USERNAME}:{PASSWORD}".encode()).decode(),
         }
-    # TODO catch errors
     return requests.post('%s%s/' % (URL, DBNAME), data=json.dumps(data), headers=headers)
 
-data = {'method': 'model.res.user.get_preferences', 'params': [True, {}]}
-result = call(data)
-context = json.loads(result.text)
+# Hacemos login, para obtener el usaurio y la sesión
+data = {'method':'common.db.login', 'params': [USERNAME, {'password': PASSWORD}]}
+result = login(data)
 
-xml_file = """<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body><WSAGVResponse xmlns="http://webservice.algevasa.com/"><WSAGVResult>&lt;Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"&gt;&lt;Body&gt;&lt;respuesta&gt;FALSE&lt;/respuesta&gt;&lt;Mensaje&gt;Pedido con artículo incorrecto 2330\r\n\r\n Pedido 091863&lt;/Mensaje&gt;&lt;/Body&gt;&lt;/Envelope&gt;</WSAGVResult></WSAGVResponse></soap:Body></soap:Envelope>"""
-data = {'method': 'model.stock.shipment.out.algevasa_response', 'params': [xml_file, context] }
+# Definimos la compañía al usuario
+data = {'method': 'model.res.user.set_preferences', 'params': [{'company': COMPANY_ID,}, {}]}
 result = call(data)
-print(result.status_code)
-print(result.text)
+
+# Obtenemos el context que necesitamos para el resto de llamadas
+data = {'method': 'model.res.user.get_preferences', 'params': [True, {}]}
+response = call(data)
+if response.status_code == 200:
+    context = json.loads(response.text)
+
+    xml_file = """<BODY>
+    <OPERACION>ALBARANVENTA</OPERACION>
+    <CLAVE>3X546AC3X69F8B3X8B6A43X1B69B3X1B80B</CLAVE>
+    <PROPIETARIO>OPENET</PROPIETARIO>
+    <IDPED></IDPED>
+    <NUMDOC>093924</NUMDOC>
+    <NUMALB>A34561</NUMALB>
+    <FECDOC>30/01/2025</FECDOC>
+    <TEXTOBS>aaaaaa</TEXTOBS>
+    <ITEMS>
+        <ITEM>
+        <LINORI></LINORI>
+        <LINDOC></LINDOC>
+        <CODART>0020</CODART>
+        <NUMLOT></NUMLOT>
+        <CADUCIDAD></CADUCIDAD>
+        <CANTIDAD_PED>100</CANTIDAD_PED>
+        <CANTIDAD_SER>100</CANTIDAD_SER>
+        <NBULTOS></NBULTOS>
+        <NPALETS></NPALETS>
+        <TEXTOBS></TEXTOBS>
+        </ITEM>
+        <ITEM>
+        <LINORI></LINORI>
+        <LINDOC></LINDOC>
+        <CODART>0848C</CODART>
+        <NUMLOT></NUMLOT>
+        <CADUCIDAD></CADUCIDAD>
+        <CANTIDAD_PED>1000</CANTIDAD_PED>
+        <CANTIDAD_SER>900</CANTIDAD_SER>
+        <NBULTOS></NBULTOS>
+        <NPALETS></NPALETS>
+        <TEXTOBS></TEXTOBS>
+        </ITEM>
+    </ITEMS>
+    </BODY>"""
+
+    # Para escribir en un registro existente (El '1' es el ID del registro)
+    data = {'method': 'model.stock.shipment.out.algevasa_response', 'params': [{'data': xml_file}, context]}
+    result = call(data)
