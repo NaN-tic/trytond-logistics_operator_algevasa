@@ -85,3 +85,20 @@ class Product(metaclass=PoolMeta):
             cls.update_algevasa_product(sub_products)
             Transaction().commit()
 
+    @classmethod
+    def create(cls, vlist):
+        pool = Pool()
+        Configuration = pool.get('product.configuration')
+
+        config = Configuration(1)
+        products = super().create(vlist)
+        products2sync = []
+        if config.auto_algevasa:
+            for product in products:
+                if product.type == 'goods':
+                    product.algevasa = True
+                    products2sync.append(product)
+            if products2sync:
+                cls.save(products2sync)
+                cls.sync_with_algevasa(products2sync)
+        return products

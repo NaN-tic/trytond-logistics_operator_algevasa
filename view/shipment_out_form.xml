@@ -8,6 +8,8 @@
             <field name="algevasa_synched"/>
             <separator string="Synchro Message" id="algevasa_synch_message_string" colspan="4"/>
             <field name="algevasa_synch_message" colspan="4"/>
+            <label name="algevasa_number"/>
+            <field name="algevasa_number"/>
             <separator string="Status Message" id="algevasa_status_string" colspan="4"/>
             <field name="algevasa_status" colspan="4"/>
         </page>
