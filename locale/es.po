@@ -2,6 +2,10 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
+msgctxt "field:product.configuration,auto_algevasa:"
+msgid "Algevasa Automatic"
+msgstr "Algevasa Automático"
+
 msgctxt "field:product.product,algevasa:"
 msgid "Algevasa"
 msgstr "Algevasa"
@@ -26,6 +30,14 @@ msgctxt "field:stock.location,algevasa_shipment_format:"
 msgid "Algevasa Shipment File Format"
 msgstr "Formato de archivo de albarán de Algevasa"
 
+msgctxt "field:stock.shipment.out,algevasa_message:"
+msgid "Algevasa Message"
+msgstr "Mensaje de Algevasa"
+
+msgctxt "field:stock.shipment.out,algevasa_number:"
+msgid "Algevasa Number"
+msgstr "Número de Algevasa"
+
 msgctxt "field:stock.shipment.out,algevasa_status:"
 msgid "Algevasa Status"
 msgstr "Algevasa Status"
@@ -41,6 +53,12 @@ msgstr "Algevasa sincronizada"
 msgctxt "field:stock.shipment.out,algevasa_warehouse:"
 msgid "Algevasa Warehouse"
 msgstr "Almacén de Algevasa"
+
+msgctxt "help:product.configuration,auto_algevasa:"
+msgid "Set Algevasa check automatically when create a Goods product."
+msgstr ""
+"Configurar la marca de Algevasa automáticamente al crear un producto "
+"de tipo 'Bien'"
 
 msgctxt "help:product.product,algevasa:"
 msgid "Work with Algevasa, a Logitiscs Operator"

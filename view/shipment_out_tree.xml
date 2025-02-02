@@ -3,6 +3,8 @@
      copyright notices and license terms. -->
 <data>
     <xpath expr="/tree" position="inside">
+        <field name="algevasa_synched" optional="1"/>
+        <field name="algevasa_number" optional="1"/>
         <button name="sync_with_algevasa" tree_invisible="1"/>
     </xpath>
 </data>
