@@ -64,21 +64,23 @@ class ShipmentOut(metaclass=PoolMeta):
         return config.get('algevasa', 'key') or ''
 
     def check_shipment_product_algevasa(self):
-        for move in self.outgoing_moves:
-            if not move.product.algevasa_synched:
-                raise UserError(
-                    gettext(
-                        'logistics_operator_algevasa.'
-                        'msg_product_without_algevasa',
-                        product=move.product.rec_name,
-                        shipment=move.shipment.rec_name))
+        if self.warehouse and self.warehouse.algevasa:
+            for move in self.outgoing_moves:
+                if not move.product.algevasa_synched:
+                    raise UserError(
+                        gettext(
+                            'logistics_operator_algevasa.'
+                            'msg_product_without_algevasa',
+                            product=move.product.rec_name,
+                            shipment=move.shipment.rec_name))
 
     @classmethod
     def generate_algevasa_shipment_file(cls, shipments):
         result = {}
         for warehouse, shipments in groupby(shipments,
                 key=lambda m: m.warehouse):
-            if warehouse and warehouse.algevasa_shipment_format:
+            if (warehouse and warehouse.algevasa
+                    and warehouse.algevasa_shipment_format):
                 result.update(warehouse.algevasa_shipment_format.export_file(
                         list(shipments)))
         return result
