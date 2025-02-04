@@ -17,7 +17,7 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.model.button" id="product_sync_with_algevasa_button">
             <field name="name">sync_with_algevasa</field>
             <field name="string">Sync With Algevasa</field>
-            <field name="model" search="[('model', '=', 'product.product')]"/>
+            <field name="model">product.product</field>
         </record>
     </data>
 </tryton>
