@@ -25,6 +25,10 @@ class ShipmentOut(metaclass=PoolMeta):
         states={
             'invisible': ~Eval('algevasa_warehouse')
             })
+    not_synch_algevasa = fields.Boolean('Not Synch Algevasa',
+        states={
+            'invisible': ~Eval('algevasa_warehouse')
+            })
     algevasa_synch_message = fields.Text('Algevasa Synch Message', readonly=True,
         states={
             'invisible': ~Eval('algevasa_warehouse')
@@ -81,8 +85,13 @@ class ShipmentOut(metaclass=PoolMeta):
                 key=lambda m: m.warehouse):
             if (warehouse and warehouse.algevasa
                     and warehouse.algevasa_shipment_format):
+                ships = []
+                for shipment in shipments:
+                    if shipment.not_synch_algevasa:
+                        continue
+                    ships.update(shipment)
                 result.update(warehouse.algevasa_shipment_format.export_file(
-                        list(shipments)))
+                        list(ships)))
         return result
 
     @classmethod
