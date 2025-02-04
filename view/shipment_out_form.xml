@@ -4,6 +4,8 @@
 <data>
   <xpath expr="/form/notebook" position="inside">
         <page string="Logistics Operator" name="algevasa_warehouse">
+            <label name="not_synch_algevasa"/>
+            <field name="not_synch_algevasa"/>
             <label name="algevasa_synched"/>
             <field name="algevasa_synched"/>
             <separator string="Synchro Message" id="algevasa_synch_message_string" colspan="4"/>
