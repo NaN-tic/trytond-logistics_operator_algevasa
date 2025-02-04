@@ -16,7 +16,7 @@
             <field name="algevasa_status" colspan="4"/>
         </page>
     </xpath>
-  <xpath expr="/form/group[@id='buttons']/button[@name='done']" position="after">
+  <xpath expr="/form/group[@id='buttons']/button[@name='do']" position="after">
         <button name="sync_with_algevasa"/>
     </xpath>
 </data>
