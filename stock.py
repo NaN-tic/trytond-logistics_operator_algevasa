@@ -89,7 +89,7 @@ class ShipmentOut(metaclass=PoolMeta):
                 for shipment in shipments:
                     if shipment.not_synch_algevasa:
                         continue
-                    ships.update(shipment)
+                    ships.append(shipment)
                 result.update(warehouse.algevasa_shipment_format.export_file(
                         list(ships)))
         return result
