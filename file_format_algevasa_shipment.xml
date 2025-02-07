@@ -4,7 +4,7 @@
 <tryton>
     <data>
         <record id="file_format_algevasa_shipment" model="file.format">
-            <field name="model" search="[('model', '=', 'stock.shipment.out')]"/>
+            <field name="model" search="[('name', '=', 'stock.shipment.out')]"/>
             <field name="name">Algevasa Shipment</field>
             <field name="storage_type">memory</field>
             <field name="file_type">xml</field>
