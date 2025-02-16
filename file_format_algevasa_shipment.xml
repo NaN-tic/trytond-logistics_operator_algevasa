@@ -48,8 +48,8 @@
     &lt;ITEMS&gt;
         {% for line in record.outgoing_moves %}
         &lt;ITEM&gt;
-            &lt;LINORI&gt;&lt;/LINORI&gt;
-            &lt;LINDOC&gt;{{ line.id }}&lt;/LINDOC&gt;
+            &lt;LINORI&gt;{{ line.id }}&lt;/LINORI&gt;
+            &lt;LINDOC&gt;1&lt;/LINDOC&gt;
             &lt;CODART&gt;{{ line.product.code }}&lt;/CODART&gt;
             &lt;NUMLOT&gt;{{ line.lot.name if line.lot else '' }}&lt;/NUMLOT&gt;
             &lt;CADUCIDAD&gt;{{ line.lot.expiry_date if line.lot and line.lot.expiry_date else '' }}&lt;/CADUCIDAD&gt;
