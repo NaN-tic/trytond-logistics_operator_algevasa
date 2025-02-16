@@ -6,6 +6,8 @@
           <group col="4" colspan="4" id="logistics_operator">
               <label name="algevasa"/>
               <field name="algevasa"/>
+              <label name="algevasa_on_done"/>
+              <field name="algevasa_on_done"/>
               <newline/>
               <label name="algevasa_product_format"/>
               <field name="algevasa_product_format"/>

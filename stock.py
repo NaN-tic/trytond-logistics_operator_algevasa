@@ -4,7 +4,7 @@ import json
 
 from trytond.pool import Pool, PoolMeta
 from trytond.model import ModelView, fields
-from trytond.pyson import Eval
+from trytond.pyson import Eval, If
 from itertools import groupby
 from trytond.rpc import RPC
 from trytond.config import config
@@ -42,6 +42,8 @@ class ShipmentOut(metaclass=PoolMeta):
         states={
             'invisible': ~Eval('algevasa_warehouse')
             })
+    algevasa_on_done = fields.Function(fields.Boolean('Algevasa On Done'),
+        'get_algevasa_on_done')
 
     @classmethod
     def __setup__(cls):
@@ -51,13 +53,19 @@ class ShipmentOut(metaclass=PoolMeta):
                 })
         cls._buttons.update({
                 'sync_with_algevasa': {
-                    'invisible': Eval('state') != 'done',
+                    'invisible': If(Eval('algevasa_on_done'),
+                        Eval('state') != 'done',
+                        Eval('state') != 'assigned',
+                        ),
                     },
                 })
 
     @fields.depends('warehouse')
     def on_change_with_algevasa_warehouse(self, name=None):
         return self.warehouse.algevasa if self.warehouse else False
+
+    def get_algevasa_on_done(self, name):
+        return self.warehouse.algevasa_on_done if self.warehouse else None
 
     @property
     def algevasa_owner(self):
@@ -109,9 +117,27 @@ class ShipmentOut(metaclass=PoolMeta):
     def done(cls, shipments):
         super().done(shipments)
 
+        shipments_to_sync = []
         for shipment in shipments:
             shipment.check_shipment_product_algevasa()
-        cls.sync_algevasa_shipment(shipments)
+            if (shipment.algevasa_on_done is not None
+                    and shipment.algevasa_on_done):
+                shipments_to_sync.append(shipment)
+        if shipments_to_sync:
+            cls.sync_algevasa_shipment(shipments_to_sync)
+
+    @classmethod
+    def assign(cls, shipments):
+        super().assign(shipments)
+
+        shipments_to_sync = []
+        for shipment in shipments:
+            shipment.check_shipment_product_algevasa()
+            if (shipment.algevasa_on_done is not None
+                    and not shipment.algevasa_on_done):
+                shipments_to_sync.append(shipment)
+        if shipments_to_sync:
+            cls.sync_algevasa_shipment(shipments_to_sync)
 
     @classmethod
     @ModelView.button
@@ -123,7 +149,8 @@ class ShipmentOut(metaclass=PoolMeta):
     @classmethod
     def algevasa_response(cls, data=None):
         pool = Pool()
-        ShipmentOut = pool.get('stock.shipment.out')
+        Sale = pool.get('sale.sale')
+        SaleLine = pool.get('sale.line')
 
         if not data:
             return {
@@ -148,7 +175,7 @@ class ShipmentOut(metaclass=PoolMeta):
                 }
         # If for example the sequence of the Shipment is repeted for each year,
         # try to get the newest shipment to compare the values.
-        shipments = ShipmentOut.search([
+        shipments = cls.search([
                 ('company.id', '=', company),
                 ('number', '=', number),
                 ('state', '=', 'done'),
@@ -215,6 +242,14 @@ class ShipmentOut(metaclass=PoolMeta):
         shipment.algevasa_number = result.get('NUMALB', '')
         shipment.algevasa_message = json.dumps(result, indent=4)
         shipment.save()
+        if (response == 'OK' and shipment.algevasa_on_done is not None
+                and not shipment.algevasa_on_done):
+            cls.pick([shipment])
+            cls.pack([shipment])
+            cls.done([cls(shipment.id)])
+            sales = [move.origin.sale for move in shipment.outgoing_moves
+                if isinstance(move.origin, SaleLine) and move.origin.sale]
+            Sale.process([Sale(sale.id) for sale in sales])
         return {
             'response': response,
             'answer': answer
