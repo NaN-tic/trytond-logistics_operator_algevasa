@@ -173,6 +173,20 @@ class ShipmentOut(metaclass=PoolMeta):
                 'answer': ('This file is not a ALVARANVENTA type or has not a '
                     'correct NUMDOC'),
                 }
+
+        owner = config.get('algevasa', 'owner')
+        key = config.get('algevasa', 'key')
+        if not result.get('PROPIETARIO', None) == owner:
+            return {
+                'response': 'KO',
+                'answer': ('It is not the correct PROPIETARIO'),
+                }
+        if not result.get('CLAVE', None) == key:
+            return {
+                'response': 'KO',
+                'answer': ('It is not the correct CLAVE'),
+                }
+
         # If for example the sequence of the Shipment is repeted for each year,
         # try to get the newest shipment to compare the values.
         shipments = cls.search([
