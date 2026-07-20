@@ -7,8 +7,7 @@ import urllib.parse
 from lxml import etree
 import html
 
-from trytond.config import config
-
+import trytond.config as config
 URL = config.get('algevasa', 'url')
 
 def xml_to_dict(element):

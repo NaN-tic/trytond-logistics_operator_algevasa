@@ -5,7 +5,7 @@ from trytond.model import ModelView, fields
 from trytond.pyson import Eval
 from trytond.tools import grouped_slice
 from trytond.transaction import Transaction
-from trytond.config import config
+import trytond.config as config
 from .algevasa import _requests
 
 

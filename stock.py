@@ -7,7 +7,7 @@ from trytond.model import ModelView, fields
 from trytond.pyson import Eval, If
 from itertools import groupby
 from trytond.rpc import RPC
-from trytond.config import config
+import trytond.config as config
 from trytond.transaction import Transaction
 from trytond.i18n import gettext
 from trytond.exceptions import UserError
